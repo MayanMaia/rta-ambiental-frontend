@@ -1,7 +1,8 @@
 # RTA Ambiental — Modernização do Site Institucional
 
 
-\
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![Projeto](https://img.shields.io/badge/projeto-RTA%20Ambiental-green)
 
 ## 📌 Sobre o projeto
 
