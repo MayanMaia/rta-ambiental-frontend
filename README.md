@@ -1,16 +1,13 @@
-# rta-ambiental-frontend
-Frontend do site institucional da RTA Ambiental, desenvolvido para apresentar seus serviços, soluções ambientais e informações institucionais.
 # RTA Ambiental — Modernização do Site Institucional
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Projeto](https://img.shields.io/badge/projeto-RTA%20Ambiental-green)
-![Escopo](https://img.shields.io/badge/escopo-Pacote%205-blue)
+
+\
 
 ## 📌 Sobre o projeto
 
 Este repositório contém o desenvolvimento da nova plataforma institucional da **RTA Ambiental**, com foco na modernização completa do site, melhoria da experiência do usuário, responsividade, segurança, SEO, gestão de conteúdo e modernização dos canais de atendimento.
 
-O projeto será desenvolvido pela equipe responsável pela entrega do **Pacote 5 — Equipe e Atendimento**, contemplando as funcionalidades previstas no escopo mais completo da proposta de modernização.
+O projeto será desenvolvido, contemplando as funcionalidades previstas no escopo mais completo da proposta de modernização.
 
 ## O novo site deverá substituir a estrutura atual por uma experiência mais moderna, limpa, responsiva e preparada para futuras estratégias digitais. A necessidade de redesenho e melhoria da experiência em dispositivos móveis foi definida como uma das prioridades do projeto.
 
@@ -31,9 +28,9 @@ O projeto será desenvolvido pela equipe responsável pela entrega do **Pacote 5
 
 ---
 
-# 🚀 Escopo do Pacote 5
+# 🚀 Escopo 
 
-O Pacote 5 contempla todas as funcionalidades previstas nos pacotes anteriores, acrescentando recursos de gestão, controle de usuários e atendimento.
+ contempla todas as funcionalidades previstas nos pacotes anteriores, acrescentando recursos de gestão, controle de usuários e atendimento.
 
 ## 🎨 1. Novo design e experiência do usuário
 
@@ -413,7 +410,7 @@ rta-ambiental-frontend/
 
 # 📅 Cronograma
 
-O **Pacote 5** possui prazo estimado de **6 a 8 semanas**, considerando o escopo completo previsto na proposta.
+ possui prazo estimado de **6 a 8 semanas**, considerando o escopo completo previsto na proposta. (cerca de 2 meses) a partir do dia 24 /08/2026
 
 O cronograma definitivo será organizado pela equipe conforme o planejamento, disponibilidade de conteúdo, validações e integrações necessárias.
 
@@ -460,16 +457,15 @@ A documentação técnica e de produto ficará concentrada no diretório `docs/`
 **Projeto:** Modernização do Site Institucional
 **Empresa:** RTA Ambiental
 **Website:** https://www.rtaambiental.com.br/
-**Escopo:** Pacote 5 — Equipe e Atendimento
-**Prazo estimado:** 6 a 8 semanas
+**Prazo estimado:** 6 a 8 semanas (pode aumentar )
 
 ---
 
 # 💰 Informações comerciais
 
-O projeto seguirá o escopo do **Pacote 5 — Equipe e Atendimento**, conforme proposta aprovada.
+O projeto seguirá o escopo , conforme proposta aprovada.
 
-O orçamento prevê equipe de 3 profissionais e contempla as funcionalidades dos pacotes anteriores, adicionando múltiplos logins com permissões por função e integração de atendimento via chatbot do WhatsApp.
+O orçamento prevê equipe de 2 profissionais e contempla as funcionalidades dos pacotes anteriores, adicionando múltiplos logins com permissões por função e integração de atendimento via chatbot do WhatsApp.
 
 Custos de **domínio e hospedagem** não estão incluídos no orçamento e são de responsabilidade do contratante.
 
@@ -486,4 +482,3 @@ O desenvolvimento será realizado pela equipe responsável pelo projeto, com div
 Este projeto é destinado à **RTA Ambiental**.
 
 A utilização, distribuição, alteração e disponibilização do código devem seguir as regras definidas entre as partes responsáveis pelo projeto.
-
