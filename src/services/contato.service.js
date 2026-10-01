@@ -3,7 +3,10 @@ import api from './api'
 export const contatoService = {
   /** Envia mensagem do formulário de contato */
   async enviar(dados) {
-    const { data } = await api.post('/contato', dados)
+    const config = typeof FormData !== 'undefined' && dados instanceof FormData
+      ? { headers: { 'Content-Type': 'multipart/form-data' } }
+      : undefined
+    const { data } = await api.post('/contato', dados, config)
     return data
   },
 

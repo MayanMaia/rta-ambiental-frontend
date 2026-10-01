@@ -1,14 +1,24 @@
 export const MOCK_MODE_KEY = 'rta.mock.enabled'
 
 export function isMockModeEnabled() {
-  const envEnabled = import.meta.env.VITE_USE_MOCKS === 'true'
+  const envValue = import.meta.env.VITE_USE_MOCKS
+  const envEnabled = envValue === 'true'
+  const envDisabled = envValue === 'false'
+  const hasExplicitApiUrl = Boolean(import.meta.env.VITE_API_URL)
 
   if (typeof window === 'undefined') {
-    return envEnabled
+    if (envEnabled) return true
+    if (envDisabled) return false
+    return !import.meta.env.PROD && !hasExplicitApiUrl
   }
 
   const savedValue = localStorage.getItem(MOCK_MODE_KEY)
-  return envEnabled || savedValue === 'true'
+  if (savedValue === 'true') return true
+  if (savedValue === 'false') return false
+  if (envEnabled) return true
+  if (envDisabled) return false
+
+  return !import.meta.env.PROD && !hasExplicitApiUrl
 }
 
 export function setMockModeEnabled(value) {

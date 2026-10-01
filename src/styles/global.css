@@ -114,7 +114,7 @@
     @apply badge bg-secondary-100 text-secondary-700;
   }
 
-  .hero-home { @apply relative isolate overflow-hidden; min-height: min(760px, calc(100svh - 4.5rem)); background: url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=2200&q=90') center / cover; }
+  .hero-home { @apply relative isolate overflow-hidden; min-height: min(760px, calc(100svh - 4.5rem)); background: url('/imagens-docx/image15.jpg') center / cover; }
   .hero-home__veil { @apply absolute inset-0; background: linear-gradient(90deg, rgba(7, 17, 40, .9) 0%, rgba(7, 17, 40, .58) 48%, rgba(7, 17, 40, .18) 100%); }
   .eyebrow { @apply mb-3 text-xs font-bold uppercase tracking-[.2em] text-[#36ad55]; }
   .service-tile { @apply relative flex min-h-[340px] overflow-hidden bg-[#101c43]; }
@@ -151,6 +151,38 @@
   .public-page .text-neutral-400 { @apply text-white/60; }
   .public-page .text-neutral-500 { @apply text-white/65; }
   .public-page .text-neutral-600 { @apply text-white/75; }
+
+  .sobre-intro-content {
+    @apply border-l-2 border-[#36ad55] bg-[#071128]/25 py-2 pl-5 pr-1 md:pl-8 md:pr-4;
+  }
+  .sobre-intro-content p { @apply text-white/80; }
+
+  .contact-page__intro {
+    @apply mb-10 flex flex-col justify-between gap-6 border-b border-white/15 pb-8 md:flex-row md:items-end;
+  }
+  .contact-page__intro .section-title { @apply mb-3; }
+  .contact-page__intro .section-subtitle { @apply max-w-2xl; }
+  .contact-page__layout { @apply mx-auto max-w-3xl; }
+  .contact-page__kicker { @apply mb-3 text-xs font-bold uppercase tracking-[.2em] text-[#f6aa00]; }
+  .contact-page__form-panel { @apply w-full border border-white/15 bg-[#071128]/65 p-5 shadow-2xl backdrop-blur-md sm:p-8; }
+  .contact-page__form-panel form { @apply border-0 bg-transparent p-0 shadow-none backdrop-blur-none; }
+  .contact-page__form-heading { @apply mb-8 flex flex-col justify-between gap-3 border-b border-white/10 pb-5 sm:flex-row sm:items-end; }
+  .contact-page__form-heading .contact-page__kicker { @apply mb-2; }
+  .contact-page__required { @apply text-xs text-white/45; }
+  .contact-page__fields { @apply space-y-5; }
+  .contact-page__field-grid { @apply grid gap-5 md:grid-cols-2; }
+  .contact-page__fields .input { @apply border-white/20 bg-[#0b1835]/90 text-white shadow-inner placeholder:text-white/35 focus:border-[#36ad55] focus:ring-[#36ad55]/40; }
+  .contact-page__fields select.input { @apply cursor-pointer; }
+  .contact-page__fields select.input option { @apply bg-[#071128] text-white; }
+  .contact-page__fields .label { @apply text-white/80; }
+  .contact-page__fields textarea.input { @apply min-h-36; }
+  .contact-page__file { @apply block w-full cursor-pointer border border-dashed border-white/25 bg-[#0b1835]/70 px-4 py-3 text-sm text-white/75 file:mr-4 file:border-0 file:bg-[#36ad55]/20 file:px-4 file:py-2 file:font-semibold file:text-[#72d987] hover:border-[#36ad55]/70; }
+  .contact-page__file--error { @apply border-red-400; }
+  .contact-page__file-help { @apply mt-2 text-xs text-white/40; }
+  .contact-page__submit { @apply w-full justify-between bg-[#f6aa00] text-[#071128] hover:bg-[#ffc13b] active:bg-[#e39a00] focus-visible:outline-[#f6aa00]; }
+  .contact-page__success { @apply flex min-h-80 flex-col items-center justify-center text-center text-white; }
+  .contact-page__success-mark { @apply mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-[#36ad55]/50 bg-[#36ad55]/15 text-2xl text-[#72d987]; }
+  .contact-page__success p:not(.text-lg) { @apply mt-2 text-sm text-white/65; }
 
   /* Admin dark theme */
   .admin-page,
@@ -205,7 +237,7 @@
 
   .builder-preview--hero {
     @apply relative overflow-hidden bg-[#101c43] text-white;
-    background-image: linear-gradient(90deg, rgba(7, 17, 40, .9) 0%, rgba(7, 17, 40, .6) 50%, rgba(7, 17, 40, .2) 100%), url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=2200&q=90');
+    background-image: linear-gradient(90deg, rgba(7, 17, 40, .9) 0%, rgba(7, 17, 40, .6) 50%, rgba(7, 17, 40, .2) 100%), url('/imagens-docx/image15.jpg');
     background-position: center;
     background-size: cover;
   }
@@ -307,6 +339,12 @@
   .animate-slide-up {
     animation: slideUp 0.5s ease forwards;
   }
+  .hero-title { transition: height 700ms cubic-bezier(.22, .8, .24, 1); }
+  .hero-title__measure { display: block; visibility: hidden; }
+  .hero-title__current,
+  .hero-title__previous { position: absolute; inset: 0; display: block; }
+  .hero-title__current.is-entering { animation: titleEnter 700ms cubic-bezier(.22, .8, .24, 1) 200ms both; }
+  .hero-title__previous.is-leaving { animation: titleLeave 450ms cubic-bezier(.4, 0, 1, 1) both; }
 }
 
 @keyframes fadeIn {
@@ -317,6 +355,48 @@
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes titleEnter {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes titleLeave {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes titleFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes titleFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title { transition: none; }
+  .hero-title__current.is-entering { animation: titleFadeIn 300ms ease-out 200ms both; }
+  .hero-title__previous.is-leaving { animation: titleFadeOut 250ms ease-in both; }
 }
 
 @keyframes fadeInPopup {

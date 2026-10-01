@@ -23,6 +23,10 @@ const createMockApi = () => {
           if (normalizedUrl === 'servicos' || normalizedUrl === 'admin/servicos') {
             return { data: await mockApi.listarServicos() }
           }
+          if (normalizedUrl.startsWith('servicos?')) {
+            const params = new URLSearchParams(normalizedUrl.split('?')[1] || '')
+            return { data: await mockApi.listarServicos(params.get('categoria') || undefined) }
+          }
           if (normalizedUrl === 'admin/mensagens') {
             return { data: await mockApi.listarMensagens() }
           }
@@ -44,7 +48,10 @@ const createMockApi = () => {
             return { data: await mockApi.login(payload.email, payload.password) }
           }
           if (normalizedUrl === 'contato') {
-            return { data: await mockApi.enviarContato(payload) }
+            const contato = typeof FormData !== 'undefined' && payload instanceof FormData
+              ? Object.fromEntries(payload.entries())
+              : payload
+            return { data: await mockApi.enviarContato(contato) }
           }
           if (normalizedUrl === 'admin/servicos') {
             return { data: await mockApi.criarServico(payload) }

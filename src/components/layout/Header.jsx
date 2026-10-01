@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
-import logoRta from '../../assets/logo-rta.svg'
+
+const logoRta = '/imagens-docx/image1.png'
 
 const NAV_LINKS = [
-  { to: '/',          label: 'Início'   },
-  { to: '/sobre',     label: 'Sobre'    },
-  { to: '/servicos',  label: 'Serviços' },
-  { to: '/contato',   label: 'Contato'  },
+  { to: '/',          label: 'Home'         },
+  { to: '/sobre',     label: 'Sobre'        },
+  { to: '/tecnologia',label: 'Tecnologia'   },
+  { to: '/consultoria',label:'Consultoria' },
+  { to: '/news',      label: 'News'         },
+  { to: '/contato',   label: 'Fale Conosco' },
 ]
 
 export default function Header() {
@@ -26,7 +29,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 md:h-18">
 
           {/* Logo */}
-          <Link to="/" className="block w-[190px] transition-opacity duration-300 hover:opacity-80 sm:w-[230px]" aria-label="RTA Ambiental - voltar para o início">
+          <Link to="/" className="block w-[220px] transition-opacity duration-300 hover:opacity-80 sm:w-[270px]" aria-label="RTA Ambiental - voltar para o início">
             <img src={logoRta} alt="RTA Ambiental" className="h-auto w-full" />
           </Link>
 
@@ -48,16 +51,6 @@ export default function Header() {
               </NavLink>
             ))}
           </nav>
-
-          {/* CTA desktop */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link to="/trabalhe-conosco" className="btn-ghost btn-sm">
-              Trabalhe Conosco
-            </Link>
-            <Link to="/contato" className="btn-primary btn-sm">
-              Fale Conosco
-            </Link>
-          </div>
 
           {/* Hamburger mobile */}
           <button
@@ -90,21 +83,6 @@ export default function Header() {
                 {label}
               </NavLink>
             ))}
-            <hr className="my-2 border-white/10" />
-            <Link
-              to="/trabalhe-conosco"
-              onClick={() => setOpen(false)}
-              className="rounded-xl px-4 py-3 text-sm font-medium text-white/70 hover:bg-white/10"
-            >
-              Trabalhe Conosco
-            </Link>
-            <Link
-              to="/contato"
-              onClick={() => setOpen(false)}
-              className="btn-primary mt-1"
-            >
-              Fale Conosco
-            </Link>
           </nav>
         </div>
       )}

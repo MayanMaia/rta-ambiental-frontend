@@ -5,6 +5,7 @@ import LoadingSpinner from '../../components/common/LoadingSpinner'
 const emptyForm = {
   nome: '',
   slug: '',
+  categoria: 'tecnologia',
   descricao: '',
   conteudo: '',
   imagem: '',
@@ -43,6 +44,7 @@ export default function AdminServicos() {
     setForm({
       nome: servico.nome,
       slug: servico.slug,
+      categoria: servico.categoria === 'consultoria' ? 'consultoria' : 'tecnologia',
       descricao: servico.descricao,
       conteudo: servico.conteudo || servico.descricao,
       imagem: servico.imagem || '',
@@ -58,11 +60,16 @@ export default function AdminServicos() {
   const onSubmit = async (event) => {
     event.preventDefault()
 
+    const nome = form.nome.trim()
+    const descricao = form.descricao.trim()
+    if (!nome || !descricao) return
+
     const payload = {
-      nome: form.nome,
-      slug: form.slug || form.nome.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      descricao: form.descricao,
-      conteudo: form.conteudo || form.descricao,
+      nome,
+      slug: form.slug.trim() || nome.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      categoria: form.categoria === 'consultoria' ? 'consultoria' : 'tecnologia',
+      descricao,
+      conteudo: form.conteudo.trim() || `<p>${descricao}</p>`,
       imagem: form.imagem?.trim() || '',
     }
 
@@ -106,6 +113,14 @@ export default function AdminServicos() {
           <div>
             <label className="label text-slate-200">Slug</label>
             <input name="slug" value={form.slug} onChange={onChange} className="input bg-slate-950 text-slate-100 border-slate-600" placeholder="ex: consultoria-ambiental" />
+          </div>
+
+          <div>
+            <label className="label text-slate-200">Categoria</label>
+            <select name="categoria" value={form.categoria} onChange={onChange} className="input bg-slate-950 text-slate-100 border-slate-600">
+              <option value="tecnologia">Tecnologia</option>
+              <option value="consultoria">Consultoria</option>
+            </select>
           </div>
 
           <div>

@@ -4,7 +4,17 @@
 
 /** Remove tags HTML de uma string */
 export const stripHtml = (str = '') =>
-  str.replace(/<[^>]*>/g, '').trim()
+  String(str).replace(/<[^>]*>/g, '').trim()
+
+/** Remove conteúdo potencialmente perigoso de HTML, preservando a estrutura básica */
+export const sanitizeHtml = (html = '') =>
+  String(html)
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+    .replace(/\s+on\w+=['"][^'"]*['"]/gi, '')
+    .replace(/javascript:/gi, '')
+    .trim()
 
 /** Sanitiza todos os campos string de um objeto */
 export const sanitizeObject = (obj) =>

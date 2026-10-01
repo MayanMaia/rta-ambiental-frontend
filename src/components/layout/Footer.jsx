@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import logoRta from '../../assets/logo-rta.svg'
+
+const logoRta = '/imagens-docx/image1.png'
 
 export default function Footer() {
   const year = new Date().getFullYear()
@@ -10,7 +11,7 @@ export default function Footer() {
 
         {/* Marca */}
         <div className="lg:col-span-2">
-          <Link to="/" className="mb-3 block w-[210px] transition-opacity duration-300 hover:opacity-80" aria-label="RTA Ambiental - voltar para o início">
+          <Link to="/" className="mb-3 block w-[250px] transition-opacity duration-300 hover:opacity-80" aria-label="RTA Ambiental - voltar para o início">
             <img src={logoRta} alt="RTA Ambiental" className="h-auto w-full" />
           </Link>
           <p className="text-sm leading-relaxed text-white/50 max-w-xs">
@@ -25,11 +26,12 @@ export default function Footer() {
           </p>
           <ul className="space-y-2 text-sm">
             {[
-              { to: '/',         label: 'Início'   },
-              { to: '/sobre',    label: 'Sobre'    },
-              { to: '/servicos', label: 'Serviços' },
-              { to: '/contato',  label: 'Contato'  },
-              { to: '/trabalhe-conosco', label: 'Trabalhe Conosco' },
+              { to: '/',           label: 'Home'         },
+              { to: '/sobre',      label: 'Sobre'        },
+              { to: '/tecnologia', label: 'Tecnologia'   },
+              { to: '/consultoria',label:'Consultoria' },
+              { to: '/news',       label: 'News'         },
+              { to: '/contato',    label: 'Fale Conosco' },
             ].map(({ to, label }) => (
               <li key={to}>
                 <Link
@@ -57,14 +59,6 @@ export default function Footer() {
                 rel="noopener noreferrer"
               >
                 WhatsApp
-              </a>
-            </li>
-            <li>
-              <a
-                href="mailto:contato@rtaambiental.com.br"
-                className="hover:text-white transition-colors"
-              >
-                contato@rtaambiental.com.br
               </a>
             </li>
           </ul>

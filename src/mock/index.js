@@ -10,6 +10,19 @@ const MOCK_STORAGE_KEY = 'rta.mock.db.v1'
 const MOCK_CONTENT_KEY = 'rta.mock.site-content.v1'
 const wait = (ms = 250) => new Promise((resolve) => setTimeout(resolve, ms))
 const clone = (value) => JSON.parse(JSON.stringify(value))
+const normalizeServico = (servico) => {
+  const nome = servico.nome?.trim() || 'Novo serviço'
+  const descricao = servico.descricao?.trim() || 'Entre em contato com a RTA Ambiental para conhecer esta solução.'
+
+  return {
+    ...servico,
+    nome,
+    slug: servico.slug?.trim() || nome.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    descricao,
+    conteudo: servico.conteudo?.trim() || `<p>${descricao}</p>`,
+    imagem: servico.imagem?.trim?.() || '',
+  }
+}
 
 export function resetMockData() {
   if (typeof window === 'undefined') return
@@ -33,9 +46,9 @@ export function resetMockData() {
     },
     sobreBuilder: {
       layout: [
-        { id: 'sobre-card-missao', type: 'card', title: 'Missão', text: 'Oferecer soluções ambientais de excelência, contribuindo para um futuro sustentável.', imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80', backgroundColor: '#ffffff', textColor: '#101c43', borderColor: '#36ad55' },
-        { id: 'sobre-card-visao', type: 'card', title: 'Visão', text: 'Ser referência em serviços ambientais, reconhecida pela qualidade e inovação.', imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80', backgroundColor: '#ffffff', textColor: '#101c43', borderColor: '#36ad55' },
-        { id: 'sobre-card-valores', type: 'card', title: 'Valores', text: 'Ética, responsabilidade, sustentabilidade, qualidade e comprometimento.', imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80', backgroundColor: '#ffffff', textColor: '#101c43', borderColor: '#36ad55' },
+        { id: 'sobre-card-missao', type: 'card', title: 'Missão', text: 'Oferecer soluções ambientais de excelência, contribuindo para um futuro sustentável.', imageUrl: '/imagens-docx/image7.png', backgroundColor: '#ffffff', textColor: '#101c43', borderColor: '#36ad55' },
+        { id: 'sobre-card-visao', type: 'card', title: 'Visão', text: 'Ser referência em serviços ambientais, reconhecida pela qualidade e inovação.', imageUrl: '/imagens-docx/image8.jpg', backgroundColor: '#ffffff', textColor: '#101c43', borderColor: '#36ad55' },
+        { id: 'sobre-card-valores', type: 'card', title: 'Valores', text: 'Ética, responsabilidade, sustentabilidade, qualidade e comprometimento.', imageUrl: '/imagens-docx/image10.jpg', backgroundColor: '#ffffff', textColor: '#101c43', borderColor: '#36ad55' },
       ],
     },
   }))
@@ -72,8 +85,15 @@ const readMockDb = () => {
     }
 
     const parsed = JSON.parse(raw)
+    const savedServices = parsed.servicos ?? []
+    const savedSlugs = new Set(savedServices.map((servico) => servico.slug))
+    const servicos = [
+      ...savedServices,
+      ...clone(mockServices).filter((servico) => !savedSlugs.has(servico.slug)),
+    ]
+
     return {
-      servicos: parsed.servicos ?? clone(mockServices),
+      servicos: servicos.map(normalizeServico),
       mensagens: parsed.mensagens ?? clone(mockMensagens),
       usuarios: (parsed.usuarios ?? clone(mockUsuarios)).map((usuario) => ({
         ...usuario,
@@ -113,10 +133,11 @@ export const mockApi = {
     }
   },
 
-  async listarServicos() {
+  async listarServicos(categoria) {
     await wait()
     const db = readMockDb()
-    return clone(db.servicos)
+    const servicos = categoria ? db.servicos.filter((item) => item.categoria === categoria) : db.servicos
+    return clone(servicos)
   },
 
   async obterServicoPorSlug(slug) {
@@ -130,12 +151,16 @@ export const mockApi = {
   async criarServico(payload) {
     await wait()
     const db = readMockDb()
+    const nome = payload.nome?.trim() || 'Novo serviço'
+    const descricao = payload.descricao?.trim() || 'Entre em contato com a RTA Ambiental para conhecer esta solução.'
+    const conteudo = payload.conteudo?.trim() || `<p>${descricao}</p>`
     const proximo = {
       id: Date.now(),
-      nome: payload.nome,
-      slug: payload.slug || payload.nome.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      descricao: payload.descricao || '',
-      conteudo: payload.conteudo || payload.descricao || '',
+      nome,
+      slug: payload.slug?.trim() || nome.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      categoria: payload.categoria === 'consultoria' ? 'consultoria' : 'tecnologia',
+      descricao,
+      conteudo,
       imagem: payload.imagem?.trim() || '',
     }
     db.servicos.unshift(proximo)
@@ -149,10 +174,16 @@ export const mockApi = {
     const index = db.servicos.findIndex((item) => item.id === Number(id))
     if (index === -1) throw buildError('Serviço não encontrado', 404)
 
+    const nome = payload.nome?.trim() || db.servicos[index].nome || 'Novo serviço'
+    const descricao = payload.descricao?.trim() || db.servicos[index].descricao || 'Entre em contato com a RTA Ambiental para conhecer esta solução.'
     const atualizado = {
       ...db.servicos[index],
       ...payload,
       id: Number(id),
+      nome,
+      descricao,
+      conteudo: payload.conteudo?.trim() || `<p>${descricao}</p>`,
+      categoria: payload.categoria === 'consultoria' ? 'consultoria' : 'tecnologia',
       imagem: payload.imagem?.trim?.() ?? db.servicos[index].imagem ?? '',
     }
 

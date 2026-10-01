@@ -25,7 +25,7 @@ const createBlock = (type) => {
         ctaPrimaryLink: '/servicos',
         ctaSecondaryText: 'Falar com a equipe',
         ctaSecondaryLink: '/contato',
-        backgroundImage: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=2200&q=90',
+        backgroundImage: '/imagens-docx/image15.jpg',
         accentColor: '#f6aa00',
         textColor: '#ffffff',
         align: 'left',
@@ -272,7 +272,7 @@ const renderCanvasBlock = (block) => {
   if (block.type === 'media') {
     return (
       <section className="builder-preview builder-preview--media" style={{ backgroundColor: block.backgroundColor || '#f7f8f5', color: block.textColor || '#101c43' }}>
-        <img src={block.imageUrl || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80'} alt={block.title} />
+        <img src={block.imageUrl || '/imagens-docx/image15.jpg'} alt={block.title} />
         <div>
           <p className="builder-preview__eyebrow" style={{ color: block.accentColor || '#36ad55' }}>Destaque</p>
           <h3>{block.title}</h3>

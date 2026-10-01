@@ -1,8 +1,11 @@
 import api from './api'
 
 export const servicosService = {
-  async listar() {
-    const { data } = await api.get('/servicos')
+  async listar({ categoria } = {}) {
+    const params = new URLSearchParams()
+    if (categoria) params.set('categoria', categoria)
+    const query = params.toString() ? `?${params.toString()}` : ''
+    const { data } = await api.get(`/servicos${query}`)
     return data
   },
 

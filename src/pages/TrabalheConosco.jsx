@@ -47,7 +47,7 @@ export default function TrabalheConosco() {
   }
 
   return (
-    <section className="public-page section" style={{ '--page-image': "url('https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=2200&q=85)" }}>
+    <section className="public-page section" style={{ '--page-image': "url('/imagens-docx/image11.jpeg')" }}>
       <div className="container max-w-2xl mx-auto">
         <h1 className="section-title">Banco de Talentos</h1>
         <p className="section-subtitle mb-10">

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { updateMeta } from '../utils/seo'
 import { getSiteContent } from '../mock/content'
 
 const SERVICES = [
-  { title: 'Valoração de resíduos', text: 'Transformamos resíduos em oportunidades de reaproveitamento e valor.', image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=900&q=85' },
-  { title: 'Destinação de resíduos', text: 'Gestão segura, rastreável e alinhada à legislação ambiental.', image: 'https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?auto=format&fit=crop&w=900&q=85' },
-  { title: 'Fornecimento de produtos', text: 'Materiais e insumos para processos industriais mais eficientes.', image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=900&q=85' },
-  { title: 'Águas e efluentes', text: 'Soluções técnicas para tratamento, controle e recuperação.', image: 'https://images.unsplash.com/photo-1538300342682-cf57afb97285?auto=format&fit=crop&w=900&q=85' },
+  { title: 'Valoração de resíduos', text: 'Transformamos resíduos em oportunidades de reaproveitamento e valor.', image: '/imagens-docx/image3.jpeg' },
+  { title: 'Destinação de resíduos', text: 'Gestão segura, rastreável e alinhada à legislação ambiental.', image: '/imagens-docx/image4.JPG' },
+  { title: 'Fornecimento de produtos', text: 'Materiais e insumos para processos industriais mais eficientes.', image: '/imagens-docx/image5.png' },
+  { title: 'Águas e efluentes', text: 'Soluções técnicas para tratamento, controle e recuperação.', image: '/imagens-docx/image6.JPG' },
 ]
 
 const parseItems = (items) => {
@@ -20,6 +20,101 @@ const parseItems = (items) => {
       .map((line) => ({ title: line, text: line }))
   }
   return []
+}
+
+function HeroWithRotatingTitle({ block }) {
+  const [phraseIndex, setPhraseIndex] = useState(0)
+  const [previousPhraseIndex, setPreviousPhraseIndex] = useState(null)
+  const phraseIndexRef = useRef(0)
+  const titleRef = useRef(null)
+  const measureRef = useRef(null)
+  const animationTimerRef = useRef(null)
+  const titles = Array.isArray(block?.titles) && block.titles.length ? block.titles : [block?.title || '']
+
+  const syncHeight = (animate = true) => {
+    if (!titleRef.current || !measureRef.current) return
+    if (!animate) titleRef.current.style.transition = 'none'
+    titleRef.current.style.height = `${measureRef.current.offsetHeight}px`
+    if (!animate) {
+      void titleRef.current.offsetHeight
+      titleRef.current.style.transition = ''
+    }
+  }
+
+  useEffect(() => {
+    if (titles.length < 2) return undefined
+    const id = window.setInterval(() => {
+      const currentIndex = phraseIndexRef.current
+      const nextIndex = (currentIndex + 1) % titles.length
+      phraseIndexRef.current = nextIndex
+      setPreviousPhraseIndex(currentIndex)
+      setPhraseIndex(nextIndex)
+      window.clearTimeout(animationTimerRef.current)
+      animationTimerRef.current = window.setTimeout(() => {
+        setPreviousPhraseIndex((current) => current === currentIndex ? null : current)
+      }, 450)
+    }, 5000)
+    return () => {
+      window.clearInterval(id)
+      window.clearTimeout(animationTimerRef.current)
+    }
+  }, [titles])
+
+  useLayoutEffect(() => {
+    syncHeight()
+  }, [phraseIndex])
+
+  useEffect(() => {
+    const handleResize = () => syncHeight(false)
+    syncHeight(false)
+    document.fonts?.ready.then(() => syncHeight(false))
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const accentColor = block.accentColor || '#f6aa00'
+  const textColor = block.textColor || '#ffffff'
+
+  return (
+    <section
+      className="hero-home text-white"
+      style={{
+        backgroundColor: block.backgroundColor || '#101c43',
+        color: textColor,
+        backgroundImage: block.backgroundImage ? `url('${block.backgroundImage}')` : undefined,
+      }}
+    >
+      <div className="hero-home__veil" />
+      <div className="container relative z-10 flex min-h-[min(760px,calc(100svh-4.5rem))] items-end pb-16 pt-28 md:pb-24">
+        <div className="max-w-3xl animate-slide-up" style={{ textAlign: block.align === 'center' ? 'center' : block.align === 'right' ? 'right' : 'left' }}>
+          <p className="mb-5 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em]" style={{ color: accentColor }}>
+            <span className="h-px w-10" style={{ backgroundColor: accentColor }} /> {block.eyebrow || 'Novo bloco de destaque'}
+          </p>
+          <h1 ref={titleRef} className="hero-title relative max-w-2xl text-4xl font-heading font-bold leading-[1.05] sm:text-6xl lg:text-7xl" style={{ color: textColor }} aria-live="polite">
+            <span ref={measureRef} className="hero-title__measure invisible block" aria-hidden="true">{titles[phraseIndex]}</span>
+            {previousPhraseIndex !== null && (
+              <span key={`previous-${previousPhraseIndex}`} className="hero-title__previous absolute inset-x-0 top-0 block is-leaving" aria-hidden="true">
+                {titles[previousPhraseIndex]}
+              </span>
+            )}
+            <span key={`current-${phraseIndex}`} className="hero-title__current absolute inset-x-0 top-0 block is-entering">
+              {titles[phraseIndex]}
+            </span>
+          </h1>
+          <p className="mt-6 max-w-xl text-base leading-relaxed sm:text-lg" style={{ color: `${textColor}CC` }}>{block.description}</p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row" style={{ justifyContent: block.align === 'center' ? 'center' : block.align === 'right' ? 'flex-end' : 'flex-start' }}>
+            {block.ctaPrimaryLink ? (
+              <Link to={block.ctaPrimaryLink} className="btn btn-lg" style={{ background: accentColor, color: '#071128' }}>{block.ctaPrimaryText || 'Botão principal'}</Link>
+            ) : null}
+            {block.ctaSecondaryLink ? (
+              <Link to={block.ctaSecondaryLink} className="btn btn-lg border border-white/50 text-white hover:bg-white/10" style={{ color: textColor }}>{block.ctaSecondaryText || 'Botão secundário'}</Link>
+            ) : null}
+          </div>
+        </div>
+      </div>
+      <a href="#servicos" className="absolute bottom-6 right-6 z-10 hidden items-center gap-3 text-xs uppercase tracking-widest md:flex" style={{ color: `${textColor}CC` }}>Role para explorar <span className="h-10 w-px" style={{ backgroundColor: accentColor }} /></a>
+    </section>
+  )
 }
 
 function renderBuilderBlock(block) {
@@ -35,35 +130,7 @@ function renderBuilderBlock(block) {
 
   switch (block.type) {
     case 'hero':
-      return (
-        <section
-          className="hero-home text-white"
-          style={{
-            ...sectionStyle,
-            backgroundImage: block.backgroundImage ? `url('${block.backgroundImage}')` : undefined,
-          }}
-        >
-          <div className="hero-home__veil" />
-          <div className="container relative z-10 flex min-h-[min(760px,calc(100svh-4.5rem))] items-end pb-16 pt-28 md:pb-24">
-            <div className="max-w-3xl animate-slide-up" style={{ textAlign: block.align === 'center' ? 'center' : block.align === 'right' ? 'right' : 'left' }}>
-              <p className="mb-5 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em]" style={{ color: accentColor }}>
-                <span className="h-px w-10" style={{ backgroundColor: accentColor }} /> {block.eyebrow || 'Novo bloco de destaque'}
-              </p>
-              <h1 className="max-w-2xl text-4xl font-heading font-bold leading-[1.05] sm:text-6xl lg:text-7xl" style={{ color: textColor }}>{block.title}</h1>
-              <p className="mt-6 max-w-xl text-base leading-relaxed sm:text-lg" style={{ color: `${textColor}CC` }}>{block.description}</p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row" style={{ justifyContent: block.align === 'center' ? 'center' : block.align === 'right' ? 'flex-end' : 'flex-start' }}>
-                {block.ctaPrimaryLink ? (
-                  <Link to={block.ctaPrimaryLink} className="btn btn-lg" style={{ background: accentColor, color: '#071128' }}>{block.ctaPrimaryText || 'Botão principal'}</Link>
-                ) : null}
-                {block.ctaSecondaryLink ? (
-                  <Link to={block.ctaSecondaryLink} className="btn btn-lg border border-white/50 text-white hover:bg-white/10" style={{ color: textColor }}>{block.ctaSecondaryText || 'Botão secundário'}</Link>
-                ) : null}
-              </div>
-            </div>
-          </div>
-          <a href="#servicos" className="absolute bottom-6 right-6 z-10 hidden items-center gap-3 text-xs uppercase tracking-widest md:flex" style={{ color: `${textColor}CC` }}>Role para explorar <span className="h-10 w-px" style={{ backgroundColor: accentColor }} /></a>
-        </section>
-      )
+      return <HeroWithRotatingTitle block={block} />
     case 'text':
       return (
         <section className="section" style={sectionStyle}>
@@ -80,7 +147,7 @@ function renderBuilderBlock(block) {
         <section className="section" style={sectionStyle}>
           <div className="container grid items-center gap-8 md:grid-cols-2">
             <div style={{ order: block.align === 'right' ? 2 : 1 }}>
-              <img src={block.imageUrl || 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80'} alt={block.title || 'Imagem'} className="h-[420px] w-full rounded-2xl object-cover" />
+              <img src={block.imageUrl || '/imagens-docx/image15.jpg'} alt={block.title || 'Imagem'} className="h-[420px] w-full rounded-2xl object-cover" />
             </div>
             <div style={{ order: block.align === 'right' ? 1 : 2 }}>
               <p className="eyebrow" style={{ color: accentColor }}>Destaque</p>
@@ -120,7 +187,7 @@ function renderBuilderBlock(block) {
     case 'cta':
       return (
         <section className="relative overflow-hidden py-16 text-white md:py-24" style={sectionStyle}>
-          <div className="absolute inset-y-0 right-0 w-1/2 bg-[url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-25" />
+          <div className="absolute inset-y-0 right-0 w-1/2 bg-[url('/imagens-docx/image15.jpg')] bg-cover bg-center opacity-25" />
           <div className="container relative">
             <p className="eyebrow" style={{ color: accentColor }}>Vamos construir juntos</p>
             <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
@@ -169,7 +236,7 @@ export default function Home() {
                 <h1 className="max-w-2xl text-4xl font-heading font-bold leading-[1.05] sm:text-6xl lg:text-7xl">{content.home.title}</h1>
                 <p className="mt-6 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">{content.home.description}</p>
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                  <Link to="/servicos" className="btn btn-lg bg-[#f6aa00] text-[#071128] hover:bg-[#ffc13b]">Conheça nossas soluções</Link>
+                  <Link to="/tecnologia" className="btn btn-lg bg-[#f6aa00] text-[#071128] hover:bg-[#ffc13b]">Conheça nossas soluções</Link>
                   <Link to="/contato" className="btn btn-lg border border-white/50 text-white hover:bg-white/10">Fale com a nossa equipe</Link>
                 </div>
               </div>
@@ -185,7 +252,7 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {SERVICES.map((service, index) => (
-                  <Link key={service.title} to="/servicos" className="service-tile group animate-slide-up" style={{ animationDelay: `${index * 80}ms` }}>
+                  <Link key={service.title} to="/tecnologia" className="service-tile group animate-slide-up" style={{ animationDelay: `${index * 80}ms` }}>
                     <img src={service.image} alt="" loading="lazy" /><span className="service-tile__shade" />
                     <span className="relative z-10 mt-auto block p-5"><span className="mb-2 block text-xs font-bold uppercase tracking-wider text-[#f6aa00]">0{index + 1}</span><span className="block text-lg font-heading font-semibold text-white">{service.title}</span><span className="mt-2 block max-h-0 overflow-hidden text-sm leading-relaxed text-white/80 opacity-0 transition-all duration-500 group-hover:max-h-20 group-hover:opacity-100">{service.text}</span></span>
                   </Link>
@@ -195,7 +262,7 @@ export default function Home() {
           </section>
 
           <section className="relative overflow-hidden bg-[#101c43] py-16 text-white md:py-24">
-            <div className="absolute inset-y-0 right-0 w-1/2 bg-[url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-25" />
+            <div className="absolute inset-y-0 right-0 w-1/2 bg-[url('/imagens-docx/image15.jpg')] bg-cover bg-center opacity-25" />
             <div className="container relative"><p className="eyebrow text-[#f6aa00]">Vamos construir juntos</p><div className="flex flex-col justify-between gap-8 md:flex-row md:items-end"><h2 className="max-w-2xl text-3xl font-heading font-semibold leading-tight sm:text-5xl">Seu próximo projeto pode deixar uma marca positiva.</h2><Link to="/contato" className="btn btn-lg shrink-0 bg-[#36ad55] text-white hover:bg-[#48c76a]">Iniciar conversa</Link></div>
               </div>
           </section>
