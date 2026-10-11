@@ -7,9 +7,9 @@ const logoRta = '/imagens-docx/image1.png'
 const NAV_LINKS = [
   { to: '/',          label: 'Home'         },
   { to: '/sobre',     label: 'Sobre'        },
-  { to: '/tecnologia',label: 'Tecnologia'   },
+  { to: '/tecnologia',label: 'Ambiental'    },
+  { to: '/engenharia',label:'Engenharia'   },
   { to: '/consultoria',label:'Consultoria' },
-  { to: '/news',      label: 'News'         },
   { to: '/contato',   label: 'Fale Conosco' },
 ]
 

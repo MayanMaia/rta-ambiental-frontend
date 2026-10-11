@@ -9,6 +9,7 @@ import { servicosService } from './services/servicos.service'
 // Lazy loading das páginas públicas
 const Home            = lazy(() => import('./pages/Home'))
 const Sobre           = lazy(() => import('./pages/Sobre'))
+const Engenharia      = lazy(() => import('./pages/Engenharia'))
 const Servicos        = lazy(() => import('./pages/Servicos'))
 const ServicoDetalhe  = lazy(() => import('./pages/ServicoDetalhe'))
 const Contato         = lazy(() => import('./pages/Contato'))
@@ -61,6 +62,7 @@ export default function App() {
           <Route element={<PublicLayout />}>
             <Route index                          element={<Home />} />
             <Route path="sobre"                   element={<Sobre />} />
+            <Route path="engenharia"              element={<Engenharia />} />
             <Route path="tecnologia"             element={<Servicos categoria="tecnologia" />} />
             <Route path="tecnologia/:slug"       element={<ServicoDetalhe categoria="tecnologia" />} />
             <Route path="consultoria"             element={<Servicos categoria="consultoria" />} />
