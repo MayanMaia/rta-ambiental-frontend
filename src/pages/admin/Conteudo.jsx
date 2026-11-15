@@ -72,7 +72,7 @@ const createBlock = (type) => {
       return {
         id: baseId,
         type: 'cta',
-        title: 'Seu próximo projeto pode deixar uma marca positiva.',
+        title: 'Tem um projeto, uma exigência ambiental ou uma obra para organizar?',
         description: 'Use este bloco para reforçar a proposta de conversão.',
         buttonText: 'Fale conosco',
         buttonLink: '/contato',

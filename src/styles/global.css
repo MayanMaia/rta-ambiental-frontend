@@ -174,7 +174,7 @@
   }
   .contact-page__intro .section-title { @apply mb-3; }
   .contact-page__intro .section-subtitle { @apply max-w-2xl; }
-  .contact-page__layout { @apply mx-auto max-w-3xl; }
+  .contact-page__layout { @apply mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,.8fr)] lg:items-start; }
   .contact-page__kicker { @apply mb-3 text-xs font-bold uppercase tracking-[.2em] text-[#f6aa00]; }
   .contact-page__form-panel { @apply w-full rounded-2xl border border-[#dce8df] bg-[#f7faf7] p-5 shadow-card sm:p-8; }
   .contact-page__form-panel form { @apply border-0 bg-transparent p-0 shadow-none; }
